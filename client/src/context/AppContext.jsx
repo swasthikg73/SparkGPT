@@ -20,7 +20,7 @@ export const AppContextProvider = ({ children }) => {
 
   const fetchUsersChats = () => {
     setChats(dummyChats);
-    setSelectedChat(dummyChats[0]);
+    setSelectedChat();
   };
 
   useEffect(() => {
@@ -40,6 +40,8 @@ export const AppContextProvider = ({ children }) => {
     } else {
       document.documentElement.classList.remove("dark");
     }
+
+    localStorage.setItem("SGPTtheme", theme);
   }, [theme]);
 
   useEffect(() => {
