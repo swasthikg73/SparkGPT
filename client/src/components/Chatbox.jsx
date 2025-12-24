@@ -16,7 +16,6 @@ const Chatbox = () => {
 
   const onSubmits = async (e) => {
     e.preventDefault();
-    console.log(prompt);
   };
 
   useEffect(() => {
@@ -39,7 +38,7 @@ const Chatbox = () => {
       {/* Chatbox Messages */}
 
       <div ref={containerRef} className="flex-1 mb-5 overflow-y-scroll">
-        {messages.length === 0 && (
+        {messages?.length === 0 && (
           <div className="h-full flex flex-col items-center justify-center gap-2 text-primary">
             <img
               src={theme === "dark" ? assets.logo_full : assets.logo_full_dark}
@@ -52,7 +51,7 @@ const Chatbox = () => {
           </div>
         )}
 
-        {messages.map((message, index) => (
+        {messages?.map((message, index) => (
           <Message message={message} key={index} />
         ))}
 

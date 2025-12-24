@@ -29,7 +29,7 @@ const Message = ({ message }) => {
             <img
               src={message.content}
               alt=""
-              className="w-full max-w-md mt-2 rounded-full"
+              className="w-full max-w-md mt-2 "
             />
           ) : (
             <div className="text-sm dark:text-primary reset-tw">

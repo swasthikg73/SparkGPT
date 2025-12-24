@@ -1,25 +1,16 @@
 import React, { useContext, useState } from "react";
 import { useAppContext } from "../context/AppContext";
-import { assets, dummyChats } from "../assets/assets";
+import { assets } from "../assets/assets";
 import moment from "moment";
 
 const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
-  const {
-    user,
-    setUser,
-
-    setChats,
-    selectedChats,
-    setSelectedChat,
-    theme,
-    setTheme,
-    fetchUser,
-    navigate,
-  } = useAppContext();
-
-  const chats = dummyChats;
-
+  const { user, setSelectedChat, theme, chats, setTheme, navigate } =
+    useAppContext();
   const [search, setSearch] = useState("");
+
+  const NewChat = {
+    messages: [],
+  };
 
   return (
     <div
@@ -36,10 +27,15 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
         className="w-full max-w-48"
       />
       <button
+        onClick={() => {
+          navigate("/");
+          setSelectedChat(NewChat);
+        }}
         className="flex justify-center items-center w-full py-2 mt-10
       text-white bg-linear-to-r from-[#A456f7] to-[#3D81F6] text-sm
-      rounded-md cursor-pointer">
-        <span className="mr-2 text-xl">+</span>New Chat
+      rounded-md cursor-pointer hover:bg-linear-to-r hover:from-[#883cd8] hover:to-[#316dd4]">
+        <span className="mr-2 text-xl">+</span>
+        New Chat
       </button>
       {/* Search Conversations */}
       <div
@@ -53,6 +49,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
           className="text-xs placeholder:text-gray-400 outline-none"
         />
       </div>
+
       {/* Recent chats */}
       {chats?.length > 0 && <p className="mt-4 text-sm">Recent Chats</p>}
       <div className="h-screen flex flex-col justify-between">
@@ -148,7 +145,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
             <label className="relative inline-flex cursor-pointer">
               <input
                 type="checkbox"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
                 className="sr-only peer"
                 // sr-only - Hides the checkbox visually,  Keeps it accessible for screen readers
                 // peer - Allows other elements (div, span) to change styles based on this checkbox state using peer-checked:*
@@ -164,7 +161,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
           {/* User Account */}
           <div
-            onClick={() => navigate("/community")}
+            onClick={() => navigate("/")}
             className="flex items-center gap-3 p-4 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer group">
             <img
               src={assets.user_icon}

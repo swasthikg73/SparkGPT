@@ -7,14 +7,16 @@ import Community from "./pages/Community";
 import { assets } from "./assets/assets";
 import "./assets/prism.css";
 import Loading from "./pages/Loading";
+import Login from "./pages/Login";
+import { useAppContext } from "./context/AppContext";
 
 const App = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
 
+  const { user } = useAppContext();
   const { pathname } = useLocation();
 
   if (pathname === "/loading") return <Loading />;
-
   return (
     <>
       {!isMenuOpen && (
@@ -26,16 +28,24 @@ const App = () => {
           onClick={() => setIsMenuOpen(true)}
         />
       )}
-      <div className="dark:bg-linear-to-b from-[#242124] to-[#000000] dark:text-white">
-        <div className="flex h-screen w-screen">
-          <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-          <Routes>
-            <Route path="/" element={<ChatBox />} />
-            <Route path="/credits" element={<Credits />} />
-            <Route path="/community" element={<Community />} />
-          </Routes>
+      {user ? (
+        <div className="dark:bg-linear-to-b from-[#242124] to-[#000000] dark:text-white">
+          <div className="flex h-screen w-screen">
+            <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+            <Routes>
+              <Route path="/" element={<ChatBox />} />
+              <Route path="/credits" element={<Credits />} />
+              <Route path="/community" element={<Community />} />
+            </Routes>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div
+          className="bg-linear-to-b from-[#242124] to-[#000000] flex
+        items-center justify-center h-screen w-screen">
+          {<Login />}
+        </div>
+      )}
     </>
   );
 };
