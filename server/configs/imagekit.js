@@ -1,4 +1,15 @@
-import ImageKit from "@imagekit/nodejs";
+import dotenv from "dotenv";
+dotenv.config();
+
+import ImageKit from "imagekit";
+
+var imagekit = new ImageKit({
+  publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+});
+
+export default imagekit;
 
 // const client = new ImageKit({
 //   privateKey: process.env.IMAGEKIT_PRIVATE_KEY, // This is the default and can be omitted
@@ -10,11 +21,3 @@ import ImageKit from "@imagekit/nodejs";
 // });
 
 // console.log(response);
-
-var imagekit = new ImageKit({
-  publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
-  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
-});
-
-export default imagekit;
