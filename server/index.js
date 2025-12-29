@@ -29,7 +29,7 @@ app.use(cors());
 
 //Routes
 app.get("", (req, res) => {
-  res.send(`<h1>Server is Up</h1>`);
+  res.send(`Server is Up`);
 });
 
 app.use("/api/user", userRouter);
