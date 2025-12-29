@@ -7,6 +7,9 @@ export const stripeWebhooks = async (req, res) => {
 
   const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
   const signature = req.headers["stripe-signature"];
+  console.log("stripe : ", stripe);
+
+  console.log("signature : ", signature);
 
   let event;
 
@@ -17,11 +20,13 @@ export const stripeWebhooks = async (req, res) => {
       process.env.STRIPE_WEBHOOKS_SECRET_KEY
     );
   } catch (error) {
+    console.log(error);
     return res.status(400).json({
       success: false,
       message: `Webhook error: ${error.message}`,
     });
   }
+  console.log("Event type  : ", event.type);
 
   try {
     switch (event.type) {
@@ -37,10 +42,14 @@ export const stripeWebhooks = async (req, res) => {
         // So you:
         // Take paymentIntent.id
         // Find the Checkout Session created for it
+        console.log("session List : ", sessionList);
 
         if (!sessionList.data.length) break;
 
         const session = sessionList.data[0];
+
+        console.log("Session : ", session);
+
         const { transactionId, appId } = session.metadata || {};
 
         if (appId !== "SparkGPT") {
@@ -54,6 +63,8 @@ export const stripeWebhooks = async (req, res) => {
           _id: transactionId,
           isPaid: false,
         });
+
+        console.log("Transaction : ", transaction);
 
         if (!transaction) break;
 
