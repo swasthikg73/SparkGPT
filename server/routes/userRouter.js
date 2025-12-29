@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getPublishedImages,
   getUser,
   loginUser,
   registerUser,
@@ -11,5 +12,6 @@ const userRouter = express.Router();
 userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
 userRouter.get("/data", protect, getUser);
+userRouter.get("/published-images", protect, getPublishedImages);
 
 export default userRouter;
