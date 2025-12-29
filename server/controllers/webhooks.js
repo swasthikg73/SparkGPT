@@ -8,7 +8,7 @@ export const stripeWebhooks = async (req, res) => {
 
   const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
   const signature = req.headers["stripe-signature"];
-  console.log("stripe : ", stripe);
+  //console.log("stripe : ", stripe);
 
   console.log("signature : ", signature);
 
@@ -49,9 +49,11 @@ export const stripeWebhooks = async (req, res) => {
 
         const session = sessionList.data[0];
 
-        console.log("Session : ", session);
+        // console.log("Session : ", session);
 
         const { transactionId, appId } = session.metadata || {};
+
+        console.log("Transaction Id and App Id ", transactionId, appId);
 
         if (appId !== "SparkGPT") {
           return res.status(200).json({
