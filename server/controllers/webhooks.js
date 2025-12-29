@@ -43,13 +43,13 @@ export const stripeWebhooks = async (req, res) => {
         // So you:
         // Take paymentIntent.id
         // Find the Checkout Session created for it
-        console.log("session List : ", sessionList);
+        //console.log("session List : ", sessionList);
 
         if (!sessionList.data.length) break;
 
         const session = sessionList.data[0];
 
-        // console.log("Session : ", session);
+        console.log("Session : ", session.metadata);
 
         const { transactionId, appId } = session.metadata || {};
 
