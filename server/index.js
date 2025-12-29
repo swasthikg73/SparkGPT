@@ -28,8 +28,8 @@ app.use(express.json());
 app.use(cors());
 
 //Routes
-app.get("/", (req, res) => {
-  res.send(`Server is Up`);
+app.get("", (req, res) => {
+  res.send(`Server is Up</h1>`);
 });
 
 app.use("/api/user", userRouter);

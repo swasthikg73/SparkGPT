@@ -3,6 +3,8 @@ import Transaction from "../models/Transaction.js";
 import User from "../models/User.js";
 
 export const stripeWebhooks = async (req, res) => {
+  console.log("-----------------------API Callled------------------");
+
   const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
   const signature = req.headers["stripe-signature"];
 
