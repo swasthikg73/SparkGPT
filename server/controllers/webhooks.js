@@ -51,9 +51,7 @@ export const stripeWebhooks = async (req, res) => {
 
         console.log("Session : ", session.metadata);
 
-        const { transactionId, appId } = session.metadata || {};
-
-        console.log("Transaction Id and App Id ", transactionId, appId);
+        const { transcationId, appId } = session.metadata || {};
 
         if (appId !== "SparkGPT") {
           return res.status(200).json({
@@ -63,11 +61,9 @@ export const stripeWebhooks = async (req, res) => {
         }
 
         const transaction = await Transaction.findOne({
-          _id: transactionId,
+          _id: transcationId,
           isPaid: false,
         });
-
-        console.log("Transaction : ", transaction);
 
         if (!transaction) break;
 
