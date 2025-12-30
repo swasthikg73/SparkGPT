@@ -25,7 +25,7 @@ export const getAllChats = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    const chats = await Chat.findOne({ userId }).sort({ updatedAt: -1 });
+    const chats = await Chat.find({ userId }).sort({ updatedAt: -1 });
     return res.json({ success: true, chats });
   } catch (error) {
     return res.json({ success: false, message: error.message });
