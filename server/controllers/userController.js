@@ -82,9 +82,6 @@ export const getPublishedImages = async (req, res) => {
         },
       },
     ]);
-
-    console.log(publishedImageMessages);
-
     res.json({ success: true, images: publishedImageMessages.reverse() });
   } catch (error) {
     return res.json({ success: false, message: error.message });
