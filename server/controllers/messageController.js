@@ -18,11 +18,9 @@ export const textMessageController = async (req, res) => {
         message: "You dont't have enough credits to use this feature",
       });
     }
-
     const chat = await Chat.findOne({ userId, _id: chatId });
 
     // console.log(chat);
-
     await chat.messages.push({
       role: "user",
       content: prompt,
@@ -35,10 +33,6 @@ export const textMessageController = async (req, res) => {
       model: "gemini-2.5-flash",
       contents: prompt,
     });
-    //console.log("AI respose------------------------------------------------");
-
-    //console.log(choices.text);
-
     var message = choices.text;
     const reply = {
       content: message,
@@ -54,7 +48,7 @@ export const textMessageController = async (req, res) => {
     await chat.save();
     await User.updateOne({ _id: userId }, { $inc: { credits: -1 } });
 
-    res.json({ sucess: true, reply });
+    res.json({ success: true, reply });
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }
