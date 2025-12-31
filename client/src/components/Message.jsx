@@ -3,8 +3,11 @@ import { assets } from "../assets/assets";
 import moment from "moment";
 import Markdown from "react-markdown";
 import Prism from "prismjs";
+import { useAppContext } from "../context/AppContext";
 
 const Message = ({ message }) => {
+  const { token, selectedchat, thene, user, axios, setUser } = useAppContext();
+
   useEffect(() => {
     Prism.highlightAll();
   }, [message.content]);
@@ -26,11 +29,13 @@ const Message = ({ message }) => {
           className="inline-flex flex-col gap-2 p-2 px-4 max-w-2xl
         bg-primary/20 dark:bg-[#57317C]/30 border border-[#80609F]/30 rounded-md my-4">
           {message.isImage ? (
-            <img
-              src={message.content}
-              alt=""
-              className="w-full max-w-md mt-2 "
-            />
+            <a href={message.content} download="My-img.png" target="_blank">
+              <img
+                src={message.content}
+                alt=""
+                className="w-full max-w-md mt-2 "
+              />
+            </a>
           ) : (
             <div className="text-sm dark:text-primary reset-tw">
               <Markdown>
