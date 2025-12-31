@@ -102,7 +102,7 @@ const Chatbox = () => {
         {messages.length === 0 && (
           <div className="h-full flex flex-col items-center justify-center gap-2 text-primary">
             <img
-              src={theme === "dark" ? assets.logo_full : assets.logo_full_dark}
+              src={theme === "dark" ? assets.l2 : assets.l1}
               alt="logo"
               className="w-full max-w-56 sm:max-w-68"
             />
@@ -145,10 +145,10 @@ const Chatbox = () => {
           value={mode}
           onChange={(e) => setMode(e.target.value)}
           className="text-sm pl-3 pr-2 outline-none">
-          <option className="dark:bg-purple-900" value="text">
+          <option className="dark:bg-orange-900" value="text">
             Text
           </option>
-          <option className="dark:bg-purple-900" value="image">
+          <option className="dark:bg-orange-900" value="image">
             Image
           </option>
         </select>

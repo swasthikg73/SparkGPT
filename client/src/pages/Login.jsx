@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   // const [state, setState] = useState("login");
@@ -47,18 +49,44 @@ const Login = () => {
   //   </form>
   // );
 
-  const { user } = useAppContext();
+  const { axios, navigate, setToken } = useAppContext();
 
   const [state, setState] = useState("login");
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    let res;
+    if (state === "login") {
+      res = await axios.post("/api/user/login", formData);
+
+      if (res.data.success) {
+        setToken(res.data.token);
+        localStorage.setItem("SparkGPTtoken", res.data.token);
+      } else {
+        toast.error(res.data.message, {
+          style: {
+            border: "1px solid #713200",
+            padding: "16px",
+            color: "#713200",
+          },
+          iconTheme: {
+            primary: "#660e60",
+            secondary: "#FFFAEE",
+          },
+        });
+      }
+    } else {
+      res = await axios.post("/api/user/register", formData);
+      if (res.data.success) {
+        setState("login");
+        toast.success("User successfully Created");
+      } else return toast.error(res.data.message);
+    }
   };
 
   const handleChange = (e) => {

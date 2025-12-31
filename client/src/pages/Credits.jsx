@@ -1,14 +1,49 @@
 import { useEffect, useState } from "react";
-import { dummyPlans } from "../assets/assets";
 import Loading from "../pages/Loading";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const Credits = () => {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const { axios, token } = useAppContext();
+
   const fetchPlans = async () => {
-    setPlans(dummyPlans);
+    try {
+      const { data } = await axios.get("/api/credit/plans", {
+        headers: { authorization: token },
+      });
+
+      if (data.success) {
+        setPlans(data.plans);
+      } else {
+        toast.error("Failed to fetch the plans");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
     setLoading(false);
+  };
+
+  const purchasePlan = async (planId) => {
+    try {
+      const { data } = await axios.post(
+        "/api/credit/purchase",
+        { planId },
+        {
+          headers: { authorization: token },
+        }
+      );
+
+      if (data.success) {
+        window.location.href = data.url;
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
@@ -33,7 +68,7 @@ const Credits = () => {
           <div
             key={index}
             className={`border border-gray-200 dark:border-purple-700 rounded-lg shadow hover:shadow-lg
-              transition-shadow p-6 min-w-[300px] flex flex-col ${
+              transition-shadow p-6 min-w-75 flex flex-col ${
                 plan._id === "pro"
                   ? "bg-purple-50 dark:bg-purple-900"
                   : "bg-white dark:bg-transparent"
@@ -60,6 +95,11 @@ const Credits = () => {
             </div>
 
             <button
+              onClick={() =>
+                toast.promise(purchasePlan(plan._id), {
+                  loading: "Processing...",
+                })
+              }
               className="mt-6 bg-purple-600 hover:bg-purple-700 *:active:bg-purple-800
              text-white font-medium py-2 rounded transition-colors cursor-pointer">
               Buy Now

@@ -44,7 +44,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
   return (
     <div
-      className={`flex flex-col h-screen min-w-72 p-5
+      className={`flex flex-col h-screen min-w-80 p-5
      dark:bg-linear-to-b from-[#242124]/30 to-[#000000]/30
       border-r border-[#80609F]/30 backdrop-blur-3xl transition-all
        duration-500 max-md:absolute left-0 z-1 ${
@@ -52,7 +52,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
        }`}>
       {/* Logo */}
       <img
-        src={theme === "dark" ? assets.logo_full : assets.logo_full_dark}
+        src={theme === "dark" ? assets.l2 : assets.l1}
         alt=""
         className="w-full max-w-48"
       />
@@ -97,10 +97,10 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
                   setIsMenuOpen(false);
                 }}
                 key={chat._id}
-                className="p-2  px-4 my-4 dark:bg-[#57317C]/10 border 
-            border-gray-300 dark:border-[#80609F]/15 rounded-md 
-            cursor-pointer flex justify-between group">
-                <div>
+                className="p-2 px-4 my-4 dark:bg-[#57317C]/10 border 
+                    border-gray-300 dark:border-[#80609F]/15 rounded-md 
+                   cursor-pointer flex justify-between group gap-2">
+                <div className="">
                   <p className="truncate w-full">
                     {chat.messages.length > 0
                       ? chat.messages[0].content.slice(0, 32)
