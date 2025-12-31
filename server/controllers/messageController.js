@@ -10,8 +10,6 @@ export const textMessageController = async (req, res) => {
     const userId = req.user._id;
     const { chatId, prompt } = req.body;
 
-    console.log(chatId, prompt);
-
     if (req.user.credits < 1) {
       return res.json({
         success: false,
