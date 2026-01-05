@@ -62,6 +62,7 @@ ImageKit
 Svix (Webhooks)
 
 
+
 💳 Payments
 
 SparkGPT integrates Stripe for handling payments securely. Webhooks are handled using Svix to ensure reliable event delivery.
