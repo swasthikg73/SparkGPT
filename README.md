@@ -71,7 +71,7 @@ SparkGPT integrates Stripe for handling payments securely. Webhooks are handled 
 
 OpenAI API for text-based AI interactions
 
-Google GenAI for advanced AI capabilities
+
 
 Easily extendable to support more AI providers
 
