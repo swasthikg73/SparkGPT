@@ -2,6 +2,10 @@ import imagekit from "../configs/imagekit.js";
 import openai from "../configs/openai.js";
 import Chat from "../models/Chat.js";
 import axios from "axios";
+import { GoogleGenAI } from "@google/genai";
+import OpenAI from "openai";
+import Groq from "groq-sdk";
+
 import User from "../models/User.js";
 
 //Text-based AI Chat Message Controller
@@ -25,13 +29,91 @@ export const textMessageController = async (req, res) => {
       timestamp: Date.now(),
       isImage: false,
     });
-    // console.log(chat);
 
-    const choices = await openai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
-    });
-    var message = choices.text;
+    // const ai = new GoogleGenAI({
+    //   apiKey: process.env.GEMINI_API_KEY,
+    // });
+
+    const groundingTool = {
+      googleSearch: {},
+    };
+    // const choices = await ai.models.generateContent({
+    //   model: "gemini-2.0-flash-lite",
+    //   contents: prompt,
+    //   // config: {
+    //   //   tools: [groundingTool],
+    //   // },
+    // });
+
+    // const client = new OpenAI();
+    // const choices = await client.responses.create({
+    //   model: "gpt-3.5-turbo",
+    //   input: prompt,
+    // });
+
+    const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+
+    // const chatCompletion = await getGroqChatCompletion();
+    // // Print the completion returned by the LLM.
+    // console.log(chatCompletion.choices[0]?.message?.content || "");
+
+    // const { choices } = await groq.chat.completions.create({
+    //   messages: [
+    //     {
+    //       role: "user",
+    //       content: prompt,
+    //       config: {
+    //         tools: [groundingTool],
+    //       },
+    //     },
+    //   ],
+    //   model: "openai/gpt-oss-20b",
+    // });
+
+    // Step 1: Get live search results
+
+    async function getLatestAnswer(prompt) {
+      // 🔎 Step 1: Fetch latest search results
+      const search = await axios.post("https://api.tavily.com/search", {
+        api_key: process.env.TAVILY_API_KEY,
+        query: prompt,
+        search_depth: "basic",
+      });
+
+      // ✅ Properly format results
+      const results = search.data.results
+        .map((r) => `Title: ${r.title}\nContent: ${r.content}`)
+        .join("\n\n");
+
+      // 🤖 Step 2: Send grounded context to Groq
+      const completion = await groq.chat.completions.create({
+        model: "openai/gpt-oss-20b",
+        messages: [
+          {
+            role: "system",
+            content: "Answer strictly using the search results provided.",
+          },
+          {
+            role: "user",
+            content: `
+Search Results:
+${results}
+
+Question:
+${prompt}
+        `,
+          },
+        ],
+      });
+
+      const responseText = completion.choices[0].message.content;
+
+      return responseText;
+    }
+
+    const responseData = await getLatestAnswer(prompt);
+
+    var message = responseData;
     const reply = {
       content: message,
       role: "assistant",
@@ -48,7 +130,11 @@ export const textMessageController = async (req, res) => {
 
     res.json({ success: true, reply });
   } catch (error) {
-    return res.json({ success: false, message: error.message });
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Sorry..something went wrong!",
+    });
   }
 };
 
@@ -112,6 +198,6 @@ export const imageController = async (req, res) => {
 
     return res.json({ success: true, reply });
   } catch (error) {
-    return res.json({ success: false, message: error.message });
+    return res.json({ success: false, message: "Sorry..something went wrong" });
   }
 };
