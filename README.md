@@ -5,7 +5,7 @@ SparkGPT is a modern AI-powered web application built using the MERN stack (Mong
 Tagline: Ignite your Innovation ✨
 
 
-For Real Time Chat - Groq AI with Tavily
+For Real Time Information - Groq AI with Tavily
 
 For Image Generation  - ImageKit 
 
