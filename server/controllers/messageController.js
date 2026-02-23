@@ -167,17 +167,24 @@ export const imageController = async (req, res) => {
     const encodedPrompt = encodeURIComponent(prompt);
 
     //Construct Imagekit AI genertion URL
-    const generatedImageUrl = `${
-      process.env.IMAGEKIT_URL_ENDPOINT
-    }/ik-genimg-prompt-
-    ${encodedPrompt}/SparkGPT/${Date.now()}.png?tr=w-800,h-800`;
+    const generatedImageUrl =
+      process.env.IMAGEKIT_URL_ENDPOINT +
+      `/ik-genimg-prompt-${encodedPrompt}/SparkGPT/${Date.now()}.png?tr=w-800,h-800`;
 
     //Trigger image generation by fetching from imagekit
     const aiImageResponse = await axios.get(generatedImageUrl, {
       responseType: "arraybuffer",
     });
 
-    //Upload/Store generated image to Imagekit
+    const contentType = aiImageResponse.headers["content-type"];
+
+    if (!contentType || !contentType.startsWith("image/")) {
+      console.error("ImageKit response is not an image");
+      console.error(aiImageResponse.data.toString());
+      throw new Error("Image generation failed");
+    }
+
+    //  Upload/Store generated image to Imagekit
     const uploadResponse = await imagekit.upload({
       file: aiImageResponse.data,
       fileName: `${Date.now()}.png`,

@@ -44,7 +44,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
   return (
     <div
-      className={`flex flex-col h-screen min-w-80 p-5
+      className={`flex flex-col h-screen min-w-90 p-5
      dark:bg-linear-to-b from-[#242124]/30 to-[#000000]/30
       border-r border-[#80609F]/30 backdrop-blur-3xl transition-all
        duration-500 max-md:absolute left-0 z-1 ${
@@ -87,7 +87,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
                 ? chat.messages[0].content
                     .toLowerCase()
                     .includes(search.toLowerCase())
-                : chat.name.toLowerCase().includes(search.toLowerCase())
+                : chat.name.toLowerCase().includes(search.toLowerCase()),
             )
             .map((chat) => (
               <div
@@ -99,7 +99,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
                 key={chat._id}
                 className="p-2 px-4 my-4 dark:bg-[#57317C]/10 border 
                     border-gray-300 dark:border-[#80609F]/15 rounded-md 
-                   cursor-pointer flex justify-between group gap-2">
+                   cursor-pointer flex justify-between group gap-2  overflow-hidden">
                 <div className="">
                   <p className="truncate w-full">
                     {chat.messages.length > 0
